@@ -4,11 +4,11 @@ public class Ledger {
 
     //Scanner named in
     Scanner in = new Scanner(System.in);
-    String userInput = in.nextLine();
+
 
     // Home Screen Menu
     public void homeScreen(){
-        System.out.printf("""
+        System.out.print("""
                         -----------------------------------------------------------
                         ------------------------ Main Menu ------------------------
                         -----------------------------------------------------------
@@ -23,6 +23,7 @@ public class Ledger {
                         
                         """
         );
+        String userInput = in.nextLine();
         while(userInput != "X"){
             switch (userInput){
                 case "D":
