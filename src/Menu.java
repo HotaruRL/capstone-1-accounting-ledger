@@ -16,9 +16,9 @@ public class Menu {
                         ------------------------ Main Menu ------------------------
                         -----------------------------------------------------------
                         
-                        [D] - Add Deposit
+                        [D] - Add Deposit (Credit)
                         [P] - Make Payment (Debit)
-                        [L] - Ledger
+                        [L] - Show Ledger Menu
                         [X] - Exit
                         
                         Please enter one of these letters ([D], [P], [L], or [X])
@@ -52,7 +52,7 @@ public class Menu {
                         [D] - Display ONLY Deposits
                         [P] - Display ONLY Payments
                         [R] - Run Reports + Custom Search
-                        [H] - Home Menu
+                        [H] - Go Back to Home Menu
                         
                         Please enter one of these letters ([A], [D], [P], [R], or [X])
                         to run the corresponding task:
@@ -63,13 +63,48 @@ public class Menu {
                 case "A" -> features.displayAll();
                 case "D" -> features.displayOnly(true);
                 case "P" -> features.displayOnly(false);
-                case "R" -> System.out.println("TODO Display Screen");
+                case "R" -> reportsMenu();
                 case "H" -> homeMenu();
                 default  -> System.out.println("\nCommand not found. Please try again!");
 
             }// End of switch
         }// End of while loop for Ledger Menu
     }// End of Ledger Menu ////////////////////////////////////////////////////////////////////////////////////////
+
+    // Reports Menu /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public void reportsMenu(){
+        int userInput = -1;
+        while(userInput != 0){
+            System.out.print("""
+                        -----------------------------------------------------------
+                        ------------------------ Reports Menu ---------------------
+                        -----------------------------------------------------------
+                        
+                        [1] - Month To Date
+                        [2] - Previous Month
+                        [3] - Year To Date
+                        [4] - Previous Year
+                        [5] - Search by Vendor
+                        [0] - Go Back to Ledger Menu
+                        
+                        Please enter one of the numbers ([1], [2], [3], [4], [5],or [0])
+                        to run the corresponding task:
+                        """
+            );
+            userInput = in.nextInt();
+            switch (userInput){
+                case 1 -> System.out.println("Month to Date");
+                case 2 -> System.out.println("Previous Month");
+                case 3 -> System.out.println("Year to Date");
+                case 4 -> System.out.println("Previous Year");
+                case 5 -> System.out.println("Search by Vendor");
+                case 0 -> ledgerMenu();
+                default  -> System.out.println("\nCommand not found. Please try again!");
+
+            }// End of switch
+        }// End of while loop for Reports Menu
+    }// End of Reports Menu ////////////////////////////////////////////////////////////////////////////////////////
 
 //    Methods for Date
 //    Plain Text//e.g. Previous Year
