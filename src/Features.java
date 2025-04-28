@@ -117,7 +117,7 @@ public class Features {
             // Add vendor from user input
             System.out.println("\nPlease enter the vendor: ");
             transaction.setVendor(in.nextLine().trim());
-            // Add amount from user input
+            // Add amount from user input and apply negative sign
             System.out.println("\nPlease enter the amount: ");
             transaction.setAmount(-in.nextDouble());
             // Use bufWriter to write to file
