@@ -1,33 +1,35 @@
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Ledger {
-
-    //Scanner named in
+    // Scanner named in
     Scanner in = new Scanner(System.in);
 
+    // Create an instance of Feature class to use its methods
+    Features features = new Features();
 
     // Home Screen Menu
     public void homeScreen(){
-        System.out.print("""
+        String userInput = "";
+        while(!userInput.equals("X")){
+            System.out.print("""
                         -----------------------------------------------------------
                         ------------------------ Main Menu ------------------------
-                        -----------------------------------------------------------
-                        
-                        Please enter one of the following letter (D, P, L, or X)
-                        to run the corresponding task:
+                        -----------------------------------------------------------                 
                         
                         D - Add Deposit
                         P - Make Payment (Debit)
                         L - Ledger
                         X - Exit
                         
+                        Please enter one of these letters (D, P, L, or X)
+                        to run the corresponding task: 
                         """
-        );
-        String userInput = in.nextLine();
-        while(userInput != "X"){
+            );
+            userInput = in.nextLine().toUpperCase();
             switch (userInput){
                 case "D":
-                    System.out.println("\nTODO Add Deposit");
+                    features.addDeposit();
                     break;
                 case "P":
                     System.out.println("\nTODO Make Payment (Debit)");
@@ -35,11 +37,14 @@ public class Ledger {
                 case "L":
                     System.out.println("\nTODO Ledger Screen");
                     break;
+                case "X":
+                    System.out.println("\nThank you for using this app!");
+                    break;
                 default:
                     System.out.println("\nCommand not found. Please try again!");
 
             }// End of switch
         }// End of while loop for Home Screen Menu
-        System.out.println("\nThank you for using this app! Goodbye!");
+        System.out.println("Goodbye!");
     }// End of Home Screen Menu
 }// End of Ledger class
