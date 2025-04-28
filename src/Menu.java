@@ -27,8 +27,8 @@ public class Menu {
             );
             userInput = in.nextLine().trim().toUpperCase();
             switch (userInput){
-                case "D" -> features.addDeposit();
-                case "P" -> features.makePayment();
+                case "D" -> features.addTransaction(true);
+                case "P" -> features.addTransaction(false);
                 case "L" -> ledgerMenu();
                 case "X" -> System.out.println("\nThank you for using this app!");
                 default  -> System.out.println("\nCommand not found. Please try again!");
@@ -61,8 +61,8 @@ public class Menu {
             userInput = in.nextLine().trim().toUpperCase();
             switch (userInput){
                 case "A" -> features.displayAll();
-                case "D" -> features.displayDeposit();
-                case "P" -> System.out.println("TODO Display Payments");
+                case "D" -> features.displayOnly(true);
+                case "P" -> features.displayOnly(false);
                 case "R" -> System.out.println("TODO Display Screen");
                 case "H" -> homeMenu();
                 default  -> System.out.println("\nCommand not found. Please try again!");
