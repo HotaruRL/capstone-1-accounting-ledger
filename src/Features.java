@@ -14,9 +14,9 @@ public class Features {
 
     //Add Deposit Function//////////////////////////////////////////////////////////////////////////////////////////////
     public void addDeposit(){
-        String choice = "";
+        String choice;
         // Create BufferWriter named bufWriter and use FileWriter to write to file in ""
-        BufferedWriter bufWriter = null;
+        BufferedWriter bufWriter;
         try {
             bufWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
         } catch (IOException e) {
@@ -49,13 +49,12 @@ public class Features {
             System.out.println("\nPlease enter the amount: ");
             transaction.setAmount(in.nextDouble());
             // Use bufWriter to write to file
-            // String.valueof is to the transaction object to String
             try {
                 bufWriter.write(transaction.toString());
                 // Flush to force writing whatever it has
                 bufWriter.flush();
             } catch (IOException e) {
-                System.out.println("\nFile could not be read.\nPlease check the filename and try again!");;
+                System.out.println("\nFile could not be read.\nPlease check the filename and try again!");
             }
 
             System.out.print("""
@@ -81,15 +80,15 @@ public class Features {
             // Close BufferedWriter
             bufWriter.close();
         } catch (IOException e) {
-            System.out.println("\nFile could not be read.\nPlease check the filename and try again!");;
+            System.out.println("\nFile could not be read.\nPlease check the filename and try again!");
         }
     } // Add of addDeposit function ////////////////////////////////////////////////////////////////////////////////////
 
     //Make Payment Function//////////////////////////////////////////////////////////////////////////////////////////////
     public void makePayment(){
-        String choice = "";
+        String choice;
         // Create BufferWriter named bufWriter and use FileWriter to write to file in ""
-        BufferedWriter bufWriter = null;
+        BufferedWriter bufWriter;
         try {
             bufWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
         } catch (IOException e) {
@@ -122,13 +121,12 @@ public class Features {
             System.out.println("\nPlease enter the amount: ");
             transaction.setAmount(-in.nextDouble());
             // Use bufWriter to write to file
-            // String.valueof is to the transaction object to String
             try {
                 bufWriter.write(transaction.toString());
                 // Flush to force writing whatever it has
                 bufWriter.flush();
             } catch (IOException e) {
-                System.out.println("\nFile could not be read.\nPlease check the filename and try again!");;
+                System.out.println("\nFile could not be read.\nPlease check the filename and try again!");
             }
 
             System.out.print("""
@@ -154,7 +152,7 @@ public class Features {
             // Close BufferedWriter
             bufWriter.close();
         } catch (IOException e) {
-            System.out.println("\nFile could not be read.\nPlease check the filename and try again!");;
+            System.out.println("\nFile could not be read.\nPlease check the filename and try again!");
         }
     } // Add of makePayment function ////////////////////////////////////////////////////////////////////////////////////
 

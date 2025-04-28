@@ -1,4 +1,3 @@
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Ledger {
@@ -15,7 +14,7 @@ public class Ledger {
             System.out.print("""
                         -----------------------------------------------------------
                         ------------------------ Main Menu ------------------------
-                        -----------------------------------------------------------                 
+                        -----------------------------------------------------------
                         
                         D - Add Deposit
                         P - Make Payment (Debit)
@@ -23,7 +22,7 @@ public class Ledger {
                         X - Exit
                         
                         Please enter one of these letters (D, P, L, or X)
-                        to run the corresponding task: 
+                        to run the corresponding task:
                         """
             );
             userInput = in.nextLine().toUpperCase();
@@ -32,7 +31,7 @@ public class Ledger {
                     features.addDeposit();
                     break;
                 case "P":
-                    System.out.println("\nTODO Make Payment (Debit)");
+                    features.makePayment();
                     break;
                 case "L":
                     System.out.println("\nTODO Ledger Screen");
