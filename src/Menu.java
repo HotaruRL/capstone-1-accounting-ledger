@@ -61,7 +61,7 @@ public class Menu {
             userInput = in.nextLine().trim().toUpperCase();
             switch (userInput){
                 case "A" -> features.displayAll();
-                case "D" -> System.out.println("TODO Display Deposits");
+                case "D" -> features.displayDeposit();
                 case "P" -> System.out.println("TODO Display Payments");
                 case "R" -> System.out.println("TODO Display Screen");
                 case "H" -> homeMenu();
