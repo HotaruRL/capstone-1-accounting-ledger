@@ -25,10 +25,10 @@ public class Features {
         }
         do {
             System.out.print("""
-                            -----------------------------------------------------------
-                            ----------------------- Add Deposit -----------------------
-                            -----------------------------------------------------------
-                            """
+                    -----------------------------------------------------------
+                    ----------------------- Add Deposit -----------------------
+                    -----------------------------------------------------------
+                    """
             );
             // Format the time to remove nano
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -58,24 +58,17 @@ public class Features {
             }
 
             System.out.print("""
-                            Do you want to add another deposit?
-
-                            Y - Add Another Deposit
-                            X - Exit to Main Menu
-                            
-                            Please enter either Y or X:
-                            """
+                    Do you want to add another deposit?
+                    
+                    [Any Key] - Add Another Deposit
+                    [X] - Exit to Main Menu
+                    
+                    Please enter either [Any Key] or [X]:
+                    """
             );
             in.nextLine();
             choice = in.nextLine().toUpperCase().trim();
-            if (choice.equals("X")) {
-                break;
-            }
-            if (!choice.equals("Y")){
-                System.out.println("\nInvalid option. Please enter either Y or X!");
-            }
-
-        }while(choice.equals("Y"));
+        } while (!choice.equals("X"));
         try {
             // Close BufferedWriter
             bufWriter.close();
@@ -132,22 +125,15 @@ public class Features {
             System.out.print("""
                             Do you want to add another payment?
 
-                            Y - Add Another Payment
-                            X - Exit to Main Menu
+                            [Any Key] - Add Another Payment
+                            [X] - Exit to Main Menu
                             
-                            Please enter either Y or X:
+                            Please enter either [Any Key] or [X]:
                             """
             );
             in.nextLine();
             choice = in.nextLine().toUpperCase().trim();
-            if (choice.equals("X")) {
-                break;
-            }
-            if (!choice.equals("Y")){
-                System.out.println("\nInvalid option. Please enter either Y or X!");
-            }
-
-        }while(choice.equals("Y"));
+        } while (!choice.equals("X"));
         try {
             // Close BufferedWriter
             bufWriter.close();

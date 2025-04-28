@@ -16,12 +16,12 @@ public class Ledger {
                         ------------------------ Main Menu ------------------------
                         -----------------------------------------------------------
                         
-                        D - Add Deposit
-                        P - Make Payment (Debit)
-                        L - Ledger
-                        X - Exit
+                        [D] - Add Deposit
+                        [P] - Make Payment (Debit)
+                        [L] - Ledger
+                        [X] - Exit
                         
-                        Please enter one of these letters (D, P, L, or X)
+                        Please enter one of these letters ([D], [P], [L], or [X])
                         to run the corresponding task:
                         """
             );
