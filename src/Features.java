@@ -183,6 +183,7 @@ public class Features {
     public void reportByCriteria(String criteria){
         HashMap<String, Transaction> lookUpTable = new HashMap<>();
 
+
         for (Transaction e : readEntries()){
 
         }
