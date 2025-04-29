@@ -190,6 +190,53 @@ public class Features {
         }
     } // End of displayOnly function //////////////////////////////////////////////////////////////////////////////////
 
+
+
+    // REPORTS FUNCTIONS
+
+    //Reports by Date Function //////////////////////////////////////////////////////////////////////////////////////////
+    public void reportsByDate(int criteria){
+        // Create BufferedReader named bufReader and use FileReader to read the file in ""
+        BufferedReader bufReader;
+        LocalDate today = LocalDate.now();
+        try {
+            bufReader = new BufferedReader(new FileReader("transactions.csv"));
+            String input;
+            int line = 0;
+            // Display 1st header line as it is
+            System.out.println(bufReader.readLine());
+            while ((input = bufReader.readLine()) != null) {
+                if (line++ == 0) {
+                    continue;
+                }
+                String[] text = input.split("\\|");
+                switch (criteria) {
+                    case 1 -> {long todayForCalc = today.toEpochDay();
+                        long firstDayOfMonth = today.withDayOfMonth(1).toEpochDay();
+                        long inputDateForCalc = LocalDate.parse(text[0]).toEpochDay();
+                        if (firstDayOfMonth >= inputDateForCalc && inputDateForCalc > todayForCalc) {
+                            continue;
+                        }System.out.println(input);
+                    }
+                    case 2 -> System.out.println("case 2");
+                    default -> System.out.println("default");
+                }
+            }
+
+
+
+        } catch (IOException e) {
+            System.out.println("\nFile could not be read.\nPlease check the filename and try again!");
+            return;
+        }
+        try {
+            // Close BufferedReader
+            bufReader.close();
+        } catch (IOException e) {
+            System.out.println("\nBufferedReader could not be closed. Please try again!");
+        }
+
+    }
 }
 
 

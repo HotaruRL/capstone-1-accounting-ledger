@@ -31,7 +31,7 @@ public class Menu {
             );
             userInput = in.nextInt();
             switch (userInput){
-                case 1 -> System.out.println("Month to Date");
+                case 1 -> features.reportsByDate(1);
                 case 2 -> System.out.println("Previous Month");
                 case 3 -> System.out.println("Year to Date");
                 case 4 -> System.out.println("Previous Year");
