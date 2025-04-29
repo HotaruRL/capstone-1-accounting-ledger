@@ -22,9 +22,10 @@ public class Menu {
                         [3] - Year To Date
                         [4] - Previous Year
                         [5] - Search by Vendor
+                        [6] - Custom Search
                         [0] - Go Back to Ledger Menu
                         
-                        Please enter one of the numbers ([1], [2], [3], [4], [5],or [0])
+                        Please enter one of the numbers ([1], [2], [3], [4], [5], [6],or [0])
                         to run the corresponding task:
                         """
             );
@@ -35,6 +36,7 @@ public class Menu {
                 case 3 -> System.out.println("Year to Date");
                 case 4 -> System.out.println("Previous Year");
                 case 5 -> System.out.println("Search by Vendor");
+                case 6 -> System.out.println("Custom Search");
                 case 0 -> ledgerMenu();
                 default  -> System.out.println("\nCommand not found. Please try again!");
 
