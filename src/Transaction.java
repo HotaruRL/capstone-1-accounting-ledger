@@ -1,14 +1,18 @@
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public class Transaction {
-    private String date;
-    private String time;
+    // Fields
+    private LocalDate date;
+    private LocalTime time;
     private String description;
     private String vendor;
     private double amount;
 
     //Constructor
     Transaction(
-            String date,
-            String time,
+            LocalDate date,
+            LocalTime time,
             String description,
             String vendor,
             double amount
@@ -20,40 +24,9 @@ public class Transaction {
         this.amount = amount;
     }
 
-    // Getters
-    public String getDate(){
-        return this.date;
-    }
-    public String getTime(){
-        return this.time;
-    }
-    public String getDescription(){
-        return this.description;
-    }
-    public String getVendor(){
-        return this.vendor;
-    }
-    public double getAmount(){
-        return this.amount;
-    }
-
-    // Setters
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-    public void setTime(String time) {
-        this.time = time;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public void setVendor(String vendor) {
-        this.vendor = vendor;
-    }
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
+    // Methods
+    public LocalDate getDate(){return this.date;}
+    public double getAmount(){return this.amount;}
 
     public String toString(){
         return String.format(

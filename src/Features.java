@@ -1,192 +1,137 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Features {
-    Features(){
-    }
-    //Scanner named in
+    // File path to read and write
+    String filePath = "transactions.csv";
+
+    // Scanner named in
     Scanner in = new Scanner(System.in);
+    // Create BufferedReader named bufReader
+    BufferedReader bufReader;
+    // Buffered Writer name bufWriter
+    BufferedWriter bufWriter;
 
-    //Add Deposit Function//////////////////////////////////////////////////////////////////////////////////////////////
-    public void addTransaction(boolean creditOrDebit){
-        String choice;
-        // Create BufferedWriter named bufWriter and use FileWriter to write to file in ""
-        BufferedWriter bufWriter;
-        try {
-            bufWriter = new BufferedWriter(new FileWriter("transactions.csv", true));
-        } catch (IOException e) {
-            System.out.println("\nFile not found.\nPlease check the filename and try again!");
-            return;
+    // Constructor
+    Features(){}
+
+
+    // REUSABLE METHODS
+    // Create a new entry
+    public Transaction createEntry(boolean creditOrDebit) {
+        // Add description from user input
+        System.out.println("\nPlease enter the description: ");
+        String description = in.nextLine().trim();
+        // Add vendor from user input
+        System.out.println("\nPlease enter the vendor: ");
+        String vendor = in.nextLine().trim();
+        // Add amount from user input
+        System.out.println("\nPlease enter the amount: ");
+        double amount;
+        if (creditOrDebit) {
+            amount = in.nextDouble();
+        }else {
+            amount = -in.nextDouble();
         }
-        do {
-            // Format the time to remove nano
-            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-            // Create an object of transaction that has all the fields
-            // Use LocalDate.now() to add Date of adding transaction in ISO format;
-            // .toString() to convert it from Date to String
-            // Use LocalTime.now to add Time of adding transaction;
-            // .format(timeFormatter) to apply format above to remove nano
-            Transaction transaction = new Transaction(
-                    LocalDate.now().toString(), LocalTime.now().format(timeFormatter), "", "", 0);
+        return new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
+    }
 
-            // Credit - Add Deposits
-            if(creditOrDebit) {
-                System.out.print("""
-                        -----------------------------------------------------------
-                        ----------------------- Add Deposit -----------------------
-                        -----------------------------------------------------------
-                        """
-                );
-                // Add description from user input
-                System.out.println("\nPlease enter the deposit description: ");
-                transaction.setDescription(in.nextLine().trim());
-                // Add vendor from user input
-                System.out.println("\nPlease enter the vendor: ");
-                transaction.setVendor(in.nextLine().trim());
-                // Add amount from user input
-                System.out.println("\nPlease enter the amount: ");
-                transaction.setAmount(in.nextDouble());
-                // Use bufWriter to write to file
-                try {
-                    bufWriter.write(transaction.toString());
-                    // Flush to force writing whatever it has
-                    bufWriter.flush();
-                } catch (IOException e) {
-                    System.out.println("\nFile could not be written on.\nPlease check the filename and try again!");
-                }
-
-                System.out.print("""
-                        Do you want to add another deposit?
-                        
-                        [Any Key] - Add Another Deposit
-                        [X] - Exit to Main Menu
-                        
-                        Please enter either [Any Key] or [X]:
-                        """
-                );
-            }
-
-            // Dedit - Add Payments
-            if(!creditOrDebit) {
-                System.out.print("""
-                        -----------------------------------------------------------
-                        ----------------------- Make Payment ----------------------
-                        -----------------------------------------------------------
-                        """
-                );
-                // Add description from user input
-                System.out.println("\nPlease enter the payment description: ");
-                transaction.setDescription(in.nextLine().trim());
-                // Add vendor from user input
-                System.out.println("\nPlease enter the vendor: ");
-                transaction.setVendor(in.nextLine().trim());
-                // Add amount from user input and apply negative sign
-                System.out.println("\nPlease enter the amount: ");
-                transaction.setAmount(-in.nextDouble());
-                // Use bufWriter to write to file
-                try {
-                    bufWriter.write(transaction.toString());
-                    // Flush to force writing whatever it has
-                    bufWriter.flush();
-                } catch (IOException e) {
-                    System.out.println("\nFile could not be written on.\nPlease check the filename and try again!");
-                }
-
-                System.out.print("""
-                        Do you want to add another payment?
-                        
-                        [Any Key] - Add Another Payment
-                        [X] - Exit to Main Menu
-                        
-                        Please enter either [Any Key] or [X]:
-                        """
-                );
-            }
-                in.nextLine();
-                choice = in.nextLine().toUpperCase().trim();
-        } while (!choice.equals("X"));
-
+    // Reader
+    public ArrayList<Transaction> readEntries() {
+        ArrayList<Transaction> entries = new ArrayList<>();
         try {
-            // Close BufferedWriter
+            bufReader = new BufferedReader(new FileReader(filePath));
+            String input;
+            // Display 1st header line as it is
+            System.out.println(bufReader.readLine());
+            // Go through each line, parse, create Transaction object, and add to entries ArrayList
+            while ((input = bufReader.readLine()) != null) {
+                String[] text = input.split("\\|"); // split entry into parts
+                // Convert parts into appropriate data type
+                LocalDate datePart = LocalDate.parse(text[0]);
+                LocalTime timePart = LocalTime.parse(text[1]);
+                double amountPart = Double.parseDouble(text[4]);
+                entries.add(new Transaction(datePart, timePart, text[2], text[3],amountPart));
+            }
+            bufReader.close();
+        } catch (IOException e) {
+            System.out.println("\nFile could not be read.\nPlease check the filename and try again!");
+        }
+        return entries;
+    }
+
+    // Writer
+    public void writeToFile(Transaction t){
+        try {
+            bufWriter = new BufferedWriter(new FileWriter(filePath, true));
+            bufWriter.write(t.toString());
+            bufWriter.flush();
             bufWriter.close();
         } catch (IOException e) {
-            System.out.println("\nBufferedWriter could not be closed. Please try again!");
+            System.out.println("\nFile not found.\nPlease double check the file Path and try again!");
         }
-    } // End of addTransaction function ////////////////////////////////////////////////////////////////////////////////////
+    }
+
+
+
+    // HOME SCREEN FUNCTIONS
+    // addTransaction Function//////////////////////////////////////////////////////////////////////////////////////////
+    public void addTransaction(boolean creditOrDebit){
+        String choice;
+        do {
+            System.out.print("""
+                        -----------------------------------------------------------
+                        -------------------- Add Transactions ---------------------
+                        -----------------------------------------------------------
+                        """
+            );
+            // Credit - Add Deposits
+            if(creditOrDebit) {
+                writeToFile(createEntry(true));
+            }
+            // Debit - Add Payments
+            if(!creditOrDebit) {
+                writeToFile(createEntry(false));
+            }
+            System.out.print("""
+                        Do you want to add another transaction?
+                        
+                        [Any Key] - Add Another Transaction
+                        [X] - Exit to Main Menu
+                        
+                        Please enter either [Any Key] or [X]:
+                        """
+            );
+            in.nextLine();
+            choice = in.nextLine().trim();
+        } while (!choice.equalsIgnoreCase("X"));
+    } // End of addTransaction Function ////////////////////////////////////////////////////////////////////////////////
 
 
 
     // LEDGER FUNCTIONS
-
-    //Display ALL Function //////////////////////////////////////////////////////////////////////////////////////////
+    // displayAll Function /////////////////////////////////////////////////////////////////////////////////////////////
     public void displayAll() {
-        // Create BufferedReader named bufReader and use FileReader to read the file in ""
-        BufferedReader bufReader;
-        try {
-            bufReader = new BufferedReader(new FileReader("transactions.csv"));
-            String input;
-            while((input = bufReader.readLine()) != null){
-                System.out.println(input);
-            }
-        } catch (IOException e) {
-            System.out.println("\nFile could not be read.\nPlease check the filename and try again!");
-            return;
-        }
-        try {
-            // Close BufferedReader
-            bufReader.close();
-        } catch (IOException e) {
-            System.out.println("\nBufferedReader could not be closed. Please try again!");
+        for(Transaction e : readEntries()){
+            System.out.println(e.toString());
         }
     } // End of displayAll function //////////////////////////////////////////////////////////////////////////////////
 
 
-    //Display ONLY Function //////////////////////////////////////////////////////////////////////////////////////////
+    // displayOnly Function //////////////////////////////////////////////////////////////////////////////////////////
     public void displayOnly(boolean depositOrPayment) {
         // depositOrPayment: true - display only deposits; false - display only payments
-        // Create BufferedReader named bufReader and use FileReader to read the file in ""
-        BufferedReader bufReader;
-        try {
-            bufReader = new BufferedReader(new FileReader("transactions.csv"));
-            String input;
-            int line = 0;
-            // Display 1st header line as it is
-            System.out.println(bufReader.readLine());
-
-            // Parse and display only transactions > 0 (deposits)
-            if(depositOrPayment) {
-                while ((input = bufReader.readLine()) != null) {
-                    if (line++ == 0) {
-                        continue; //skip parsing 1st header line
-                    }
-                    String[] text = input.split("\\|");
-                    if (Double.parseDouble(text[4]) > 0) {
-                        System.out.println(input);
-                    }
-                }
-            }else{
-                while ((input = bufReader.readLine()) != null) {
-                    if (line++ == 0) {
-                        continue; //skip parsing 1st header line
-                    }
-                    String[] text = input.split("\\|");
-                    if (Double.parseDouble(text[4]) < 0) {
-                        System.out.println(input);
-                    }
-                }
+        for (Transaction e : readEntries()) {
+            if (depositOrPayment && e.getAmount() > 0) {
+                System.out.println(e);
             }
-        } catch (IOException e) {
-            System.out.println("\nFile could not be read.\nPlease check the filename and try again!");
-            return;
-        }
-        try {
-            // Close BufferedReader
-            bufReader.close();
-        } catch (IOException e) {
-            System.out.println("\nBufferedReader could not be closed. Please try again!");
+            if (!depositOrPayment && e.getAmount() < 0){
+                System.out.println(e);
+            }
         }
     } // End of displayOnly function //////////////////////////////////////////////////////////////////////////////////
 
@@ -194,48 +139,53 @@ public class Features {
 
     // REPORTS FUNCTIONS
 
-    //Reports by Date Function //////////////////////////////////////////////////////////////////////////////////////////
-    public void reportsByDate(int criteria){
-        // Create BufferedReader named bufReader and use FileReader to read the file in ""
-        BufferedReader bufReader;
+    // reportByDate Function ///////////////////////////////////////////////////////////////////////////////////////////
+    public void reportByDate(int criteria){
         LocalDate today = LocalDate.now();
-        try {
-            bufReader = new BufferedReader(new FileReader("transactions.csv"));
-            String input;
-            int line = 0;
-            // Display 1st header line as it is
-            System.out.println(bufReader.readLine());
-            while ((input = bufReader.readLine()) != null) {
-                if (line++ == 0) {
-                    continue;
-                }
-                String[] text = input.split("\\|");
-                switch (criteria) {
-                    case 1 -> {long todayForCalc = today.toEpochDay();
-                        long firstDayOfMonth = today.withDayOfMonth(1).toEpochDay();
-                        long inputDateForCalc = LocalDate.parse(text[0]).toEpochDay();
-                        if (firstDayOfMonth >= inputDateForCalc && inputDateForCalc > todayForCalc) {
-                            continue;
-                        }System.out.println(input);
+        int previousMonth = today.getMonthValue() - 1;
+        int previousYear = today.getYear() - 1;
+        for (Transaction e : readEntries()) {
+            switch (criteria) {
+                // Month to Date
+                case 1 -> {
+                    long todayInEpoch = today.toEpochDay();
+                    long firstDayOfMonth = today.withDayOfMonth(1).toEpochDay();
+                    long inputDateForCalc = e.getDate().toEpochDay();
+                    if (inputDateForCalc < firstDayOfMonth || inputDateForCalc >= todayInEpoch) {
+                        continue;
                     }
-                    case 2 -> System.out.println("case 2");
-                    default -> System.out.println("default");
+                    System.out.println(e);
                 }
+                // Previous Month
+                case 2 -> {
+                    if (e.getDate().getMonthValue() == previousMonth && e.getDate().getYear() == today.getYear()){
+                        System.out.println(e);
+                    }
+                }
+                // Year to Date
+                case 3 -> {
+                    if (e.getDate().getYear() == today.getYear()){
+                        System.out.println(e);
+                    }
+                }
+                case 4 ->{
+                    if (e.getDate().getYear() == previousYear){
+                        System.out.println(e);
+                    }
+                }
+                default -> {return;}
             }
-
-
-
-        } catch (IOException e) {
-            System.out.println("\nFile could not be read.\nPlease check the filename and try again!");
-            return;
         }
-        try {
-            // Close BufferedReader
-            bufReader.close();
-        } catch (IOException e) {
-            System.out.println("\nBufferedReader could not be closed. Please try again!");
-        }
+    }// End of reportByDate function ///////////////////////////////////////////////////////////////////////////////////
 
+
+    // reportByCriteria Function ///////////////////////////////////////////////////////////////////////////////////////
+    public void reportByCriteria(String criteria){
+        HashMap<String, Transaction> lookUpTable = new HashMap<>();
+
+        for (Transaction e : readEntries()){
+
+        }
     }
 }
 

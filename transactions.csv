@@ -1,7 +1,7 @@
 date|time|description|vendor|amount
 2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
 2023-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
-2025-04-28|10:55:48|mouse|corsair|29.99
+2025-04-27|10:55:48|mouse|corsair|29.99
 2025-04-28|11:19:08|keyboard|Razer|100.00
 2025-04-28|11:35:38|monitor|LG|3000.00
 2025-04-28|11:36:22|monitor|lg|3000.00
@@ -22,3 +22,12 @@ date|time|description|vendor|amount
 2025-04-28|14:15:13|credit card|credit1|-1000.00
 2025-04-28|16:33:09|phone|Samsung|2000.00
 2025-04-28|16:36:30|credit card|BECU|-2000.00
+2025-04-29|10:30:05.021376700|flight|delta|1800.00
+2025-04-29|10:32:22.923738300|earbud|sony|400.00
+2025-04-29|11:45:26.733732|headset|meta|300.00
+2025-04-29|12:20:00.011011700|concert|GoConcert|700.00
+2025-04-29|12:20:21.989426700|flight|alaska|900.00
+2025-04-29|12:20:31.620309600|muffin|kroger|5.00
+2025-04-29|12:25:34.077328900|credit card|cap1|-4000.00
+2025-04-29|12:26:00.692515800|bread|fred meyer|3.00
+2025-03-29|12:26:00.692515800|match latte|Starbucks|7.00

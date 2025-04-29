@@ -30,26 +30,26 @@ public class Menu {
                         """
             );
             userInput = in.nextInt();
+            String _ = in.nextLine();
             switch (userInput){
-                case 1 -> features.reportsByDate(1);
-                case 2 -> System.out.println("Previous Month");
-                case 3 -> System.out.println("Year to Date");
-                case 4 -> System.out.println("Previous Year");
-                case 5 -> System.out.println("Search by Vendor");
-                case 6 -> System.out.println("Custom Search");
-                case 0 -> ledgerMenu();
+                case 1 -> features.reportByDate(1);
+                case 2 -> features.reportByDate(2);
+                case 3 -> features.reportByDate(3);
+                case 4 -> features.reportByDate(4);
+                case 5 -> System.out.println("Search by Criteria");
+                case 0 -> {return;}
                 default  -> System.out.println("\nCommand not found. Please try again!");
 
             }// End of switch
         }// End of while loop for Reports Menu
-    }// End of Reports Menu ////////////////////////////////////////////////////////////////////////////////////////
+    }// End of Reports Menu ////////////////////////////////////////////////////////////////////////////////////////////
 
 
     // Ledger Menu /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void ledgerMenu(){
         String userInput = "";
-        while(!userInput.equals("X")){
+        while(!userInput.equalsIgnoreCase("H")){
             System.out.print("""
                         -----------------------------------------------------------
                         ------------------------ Ledger Menu ----------------------
@@ -71,18 +71,18 @@ public class Menu {
                 case "D" -> features.displayOnly(true);
                 case "P" -> features.displayOnly(false);
                 case "R" -> reportsMenu();
-                case "H" -> homeMenu();
+                case "H" -> {return;}
                 default  -> System.out.println("\nCommand not found. Please try again!");
 
             }// End of switch
         }// End of while loop for Ledger Menu
-    }// End of Ledger Menu ////////////////////////////////////////////////////////////////////////////////////////
+    }// End of Ledger Menu /////////////////////////////////////////////////////////////////////////////////////////////
 
 
     // Home Screen Menu ////////////////////////////////////////////////////////////////////////////////////////////////
     public void homeMenu(){
         String userInput = "";
-        while(!userInput.equals("X")){
+        while(!userInput.equalsIgnoreCase("X")){
             System.out.print("""
                         -----------------------------------------------------------
                         ------------------------ Main Menu ------------------------
@@ -108,7 +108,7 @@ public class Menu {
             }// End of switch
         }// End of while loop for Home Menu
         System.out.println("Goodbye!");
-    }// End of Home Menu ////////////////////////////////////////////////////////////////////////////////////////
+    }// End of Home Menu ///////////////////////////////////////////////////////////////////////////////////////////////
 
 //    Methods for Date
 //    Plain Text//e.g. Previous Year
