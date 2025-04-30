@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Transaction {
@@ -26,6 +27,7 @@ public class Transaction {
 
     // Methods
     public LocalDate getDate(){return this.date;}
+    public LocalDateTime getDateTime(){return LocalDateTime.of(this.date,this.time);}
     public String getDescription(){return this.description;}
     public String getVendor(){return this.vendor;}
     public double getAmount(){return this.amount;}

@@ -1,10 +1,7 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class Features {
     // File path to read and write
@@ -54,7 +51,7 @@ public class Features {
                 String[] text = input.split("\\|"); // split entry into parts
                 // Convert parts into appropriate data type
                 LocalDate datePart = LocalDate.parse(text[0]);
-                LocalTime timePart = LocalTime.parse(text[1]);
+                LocalTime timePart = LocalTime.parse(text[1]).withNano(0);
                 double amountPart = Double.parseDouble(text[4]);
                 entries.add(new Transaction(datePart, timePart, text[2], text[3],amountPart));
             }
@@ -62,7 +59,8 @@ public class Features {
         } catch (IOException e) {
             System.out.println("\nFile could not be read.\nPlease check the filename and try again!");
         }
-        return entries;
+        entries.sort(Comparator.comparing(Transaction::getDateTime));
+        return new ArrayList<> (entries.reversed());
     }
 
     // Writer
@@ -218,25 +216,21 @@ public class Features {
                 if(e.getDate().toEpochDay() >= LocalDate.parse(criteria.get("Start Date")).toEpochDay()) {
                     System.out.println(e);
                 }
-            }
-            else if (!Objects.equals(criteria.get("End Date"), "")){
+            } else if (!Objects.equals(criteria.get("End Date"), "")){
                 if (e.getDate().toEpochDay() <= LocalDate.parse(criteria.get("End Date")).toEpochDay()) {
                     System.out.println(e);
                 }
-            }
-            else if (
+            } else if (
                     !Objects.equals(criteria.get("Description"), "") &&
                     e.getDescription().equalsIgnoreCase(criteria.get("Description"))
             ){
                 System.out.println(e);
-            }
-            else if (
+            } else if (
                     !Objects.equals(criteria.get("Vendor"), "") &&
                     e.getVendor().equalsIgnoreCase(criteria.get("Vendor"))
             ){
                 System.out.println(e);
-            }
-            else if (
+            } else if (
                     !Objects.equals(criteria.get("Amount"), "") &&
                     e.getAmount() == Double.parseDouble(criteria.get("Amount"))
             ){
