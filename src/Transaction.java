@@ -26,6 +26,8 @@ public class Transaction {
 
     // Methods
     public LocalDate getDate(){return this.date;}
+    public String getDescription(){return this.description;}
+    public String getVendor(){return this.vendor;}
     public double getAmount(){return this.amount;}
 
     public String toString(){

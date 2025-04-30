@@ -10,8 +10,8 @@ public class Menu {
     // Reports Menu /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public void reportsMenu(){
-        int userInput = -1;
-        while(userInput != 0){
+        int userInput;
+        while(true){
             System.out.print("""
                         -----------------------------------------------------------
                         ------------------------ Reports Menu ---------------------
@@ -21,11 +21,10 @@ public class Menu {
                         [2] - Previous Month
                         [3] - Year To Date
                         [4] - Previous Year
-                        [5] - Search by Vendor
-                        [6] - Custom Search
+                        [5] - Custom Search by Criteria
                         [0] - Go Back to Ledger Menu
                         
-                        Please enter one of the numbers ([1], [2], [3], [4], [5], [6],or [0])
+                        Please enter one of the numbers ([1], [2], [3], [4], [5],or [0])
                         to run the corresponding task:
                         """
             );
@@ -36,7 +35,7 @@ public class Menu {
                 case 2 -> features.reportByDate(2);
                 case 3 -> features.reportByDate(3);
                 case 4 -> features.reportByDate(4);
-                case 5 -> System.out.println("Search by Criteria");
+                case 5 -> features.reportByCriteria();
                 case 0 -> {return;}
                 default  -> System.out.println("\nCommand not found. Please try again!");
 

@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Features {
@@ -180,14 +181,69 @@ public class Features {
 
 
     // reportByCriteria Function ///////////////////////////////////////////////////////////////////////////////////////
-    public void reportByCriteria(String criteria){
-        HashMap<String, Transaction> lookUpTable = new HashMap<>();
+    public void reportByCriteria(){
+        // HashMap for Search Criteria and their values
+        HashMap<String, String> criteria = new HashMap<>();
+        System.out.print("""
+                    -----------------------------------------------------------
+                    ----------------------- Custom Search ---------------------
+                    -----------------------------------------------------------
+                    
+                    Search transactions by one or more of the following criteria
+                    
+                    o Start Date
+                    o End Date
+                    o Description
+                    o Vendor
+                    o Amount
+                    
+                    Please enter values for those criteria as they are prompted.
+                    If you want to skip a criteria, just hit [Enter] key.
+                    """
+        );
+        System.out.print("\nPlease enter Start Date using this format YYYY-MM-DD: ");
+        criteria.put("Start Date", in.nextLine().trim()) ;
+        System.out.print("\nPlease enter End Date using this format YYYY-MM-DD: ");
+        criteria.put("End Date", in.nextLine().trim()) ;
+        System.out.print("\nPlease enter Description: ");
+        criteria.put("Description Date", in.nextLine().trim()) ;
+        System.out.print("\nPlease enter Vendor: ");
+        criteria.put("Vendor", in.nextLine().trim()) ;
+        System.out.print("\nPlease enter Amount: ");
+        criteria.put("Amount", in.nextLine().trim()) ;
 
-
+        // Compare each entry to each of the Search Criteria
         for (Transaction e : readEntries()){
-
+            if (!Objects.equals(criteria.get("Start Date"), "")){
+                if(e.getDate().toEpochDay() >= LocalDate.parse(criteria.get("Start Date")).toEpochDay()) {
+                    System.out.println(e);
+                }
+            }
+            else if (!Objects.equals(criteria.get("End Date"), "")){
+                if (e.getDate().toEpochDay() <= LocalDate.parse(criteria.get("End Date")).toEpochDay()) {
+                    System.out.println(e);
+                }
+            }
+            else if (
+                    !Objects.equals(criteria.get("Description"), "") &&
+                    e.getDescription().equalsIgnoreCase(criteria.get("Description"))
+            ){
+                System.out.println(e);
+            }
+            else if (
+                    !Objects.equals(criteria.get("Vendor"), "") &&
+                    e.getVendor().equalsIgnoreCase(criteria.get("Vendor"))
+            ){
+                System.out.println(e);
+            }
+            else if (
+                    !Objects.equals(criteria.get("Amount"), "") &&
+                    e.getAmount() == Double.parseDouble(criteria.get("Amount"))
+            ){
+                System.out.println(e);
+            }
         }
-    }
+    }// End of reportByCriteria function //////////////////////////////////////////////////////////////////////////////
 }
 
 
