@@ -1,6 +1,7 @@
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 public class Features {
@@ -18,8 +19,8 @@ public class Features {
     Features(){}
 
 
-    // REUSABLE METHODS
-    // Create a new entry
+    // ----------------------------------------------- UTILITIES METHODS -------------------------------------------- //
+    // Create a new transaction entry from user input
     public Transaction createEntry(boolean creditOrDebit) {
         // Add description from user input
         System.out.println("\nPlease enter the description: ");
@@ -36,9 +37,9 @@ public class Features {
             amount = -in.nextDouble();
         }
         return new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
-    }
+    } // End of createEntry method
 
-    // Reader
+    // Read csv file and create an ArrayList of all transactions in reversed chronological order
     public ArrayList<Transaction> readEntries() {
         ArrayList<Transaction> entries = new ArrayList<>();
         try {
@@ -51,7 +52,7 @@ public class Features {
                 String[] text = input.split("\\|"); // split entry into parts
                 // Convert parts into appropriate data type
                 LocalDate datePart = LocalDate.parse(text[0]);
-                LocalTime timePart = LocalTime.parse(text[1]).withNano(0);
+                LocalTime timePart = LocalTime.parse(text[1]).truncatedTo(ChronoUnit.SECONDS);
                 double amountPart = Double.parseDouble(text[4]);
                 entries.add(new Transaction(datePart, timePart, text[2], text[3],amountPart));
             }
@@ -61,9 +62,9 @@ public class Features {
         }
         entries.sort(Comparator.comparing(Transaction::getDateTime));
         return new ArrayList<> (entries.reversed());
-    }
+    } // End of readEntries method
 
-    // Writer
+    // Write to csv file
     public void writeToFile(Transaction t){
         try {
             bufWriter = new BufferedWriter(new FileWriter(filePath, true));
@@ -73,12 +74,11 @@ public class Features {
         } catch (IOException e) {
             System.out.println("\nFile not found.\nPlease double check the file Path and try again!");
         }
-    }
+    } // End of writeToFile method
+    // --------------------------------------------- UTILITIES METHODS ENDS ----------------------------------------- //
 
-
-
-    // HOME SCREEN FUNCTIONS
-    // addTransaction Function//////////////////////////////////////////////////////////////////////////////////////////
+    // --------------------------------------------- HOME SCREEN FUNCTIONS ---------------------------------------------
+    // Add transaction entry to cvs file; Auto add negative sign if enter from Make Payment option
     public void addTransaction(boolean creditOrDebit){
         String choice;
         do {
@@ -108,20 +108,18 @@ public class Features {
             in.nextLine();
             choice = in.nextLine().trim();
         } while (!choice.equalsIgnoreCase("X"));
-    } // End of addTransaction Function ////////////////////////////////////////////////////////////////////////////////
+    } // End of addTransaction Function
+    // ------------------------------------------ HOME SCREEN FUNCTIONS ENDS ---------------------------------------- //
 
-
-
-    // LEDGER FUNCTIONS
-    // displayAll Function /////////////////////////////////////////////////////////////////////////////////////////////
+    // ----------------------------------------------- LEDGER FUNCTIONS ------------------------------------------------
+    // Display ALL transaction entries
     public void displayAll() {
         for(Transaction e : readEntries()){
             System.out.println(e.toString());
         }
-    } // End of displayAll function ////////////////////////////////////////////////////////////////////////////////////
+    } // End of displayAll function
 
-
-    // displayOnly Function ////////////////////////////////////////////////////////////////////////////////////////////
+    // Display either Deposit ONLY or Payment ONLY depends on which option chose in Ledger Menu
     public void displayOnly(boolean depositOrPayment) {
         // depositOrPayment: true - display only deposits; false - display only payments
         for (Transaction e : readEntries()) {
@@ -132,13 +130,11 @@ public class Features {
                 System.out.println(e);
             }
         }
-    } // End of displayOnly function ///////////////////////////////////////////////////////////////////////////////////
+    } // End of displayOnly function
+    // -------------------------------------------- LEDGER FUNCTIONS ENDS ----------------------------------------------
 
-
-
-    // REPORTS FUNCTIONS
-
-    // reportByDate Function ///////////////////////////////////////////////////////////////////////////////////////////
+    // -------------------------------------------- REPORTS FUNCTIONS --------------------------------------------------
+    // Display entries that match Date criteria chosen in Reports Menu
     public void reportByDate(int criteria){
         LocalDate today = LocalDate.now();
         int previousMonth = today.getMonthValue() - 1;
@@ -175,10 +171,61 @@ public class Features {
                 default -> {return;}
             }
         }
-    }// End of reportByDate function ///////////////////////////////////////////////////////////////////////////////////
+    }// End of reportByDate function
+    // ----------------------------------------- REPORTS FUNCTIONS ENDS ------------------------------------------------
+
+    // ------------------------------------------------- CUSTOM SEARCH -------------------------------------------------
+    // A set of methods to compare entries' values vs. active criteria's values
+    // Data types are converted here for comparisons
+    public boolean isValidStartDate(String criteriaValue, LocalDate entryValue){
+        return entryValue.toEpochDay() >= LocalDate.parse(criteriaValue).toEpochDay();
+    }
+    public boolean isValidEndDate(String criteriaValue, LocalDate entryValue){
+        return entryValue.toEpochDay() <= LocalDate.parse(criteriaValue).toEpochDay();
+    }
+    public boolean isValidStringExact(String criteriaValue, String entryValue){
+        return entryValue.equalsIgnoreCase(criteriaValue);
+    }
+    public boolean isValidStringContains(String criteriaValue, String entryValue){
+        return entryValue.contains(criteriaValue);
+    }
+    public boolean isValidAmount(String criteriaValue, double entryValue){
+        return Double.parseDouble(criteriaValue) == entryValue;
+    }
+
+    // Method to make sure entry meets all active criteria (Default: true; if one criterion doesn't match, return false)
+    // Pass in only original data
+    public boolean meetAllCriteria(String key, String criteriaValue, Transaction entry){
+        if (("Start Date").equalsIgnoreCase(key)){
+            if (!isValidStartDate(criteriaValue, entry.getDate())) {
+                return false;
+            }
+        }
+        if (("End Date").equalsIgnoreCase(key)) {
+            if (!isValidEndDate(criteriaValue, entry.getDate())) {
+                return false;
+            }
+        }
+        if (("Description").equalsIgnoreCase(key)) {
+            if (!isValidStringExact(criteriaValue, entry.getDescription())) {
+                return false;
+            }
+        }
+        if (("Vendor").equalsIgnoreCase(key)) {
+            if (!isValidStringExact(criteriaValue, entry.getVendor())) {
+                return false;
+            }
+        }
+        if (("Amount").equalsIgnoreCase(key)) {
+            if (!isValidAmount(criteriaValue, entry.getAmount())) {
+                return false;
+            }
+        }
+        return true;
+    } // End of meetAllCriteria method
 
 
-    // reportByCriteria Function ///////////////////////////////////////////////////////////////////////////////////////
+    // Display entries that match one or multiple criteria's values entered by user
     public void reportByCriteria(){
         // HashMap for Search Criteria and their values
         HashMap<String, String> criteria = new HashMap<>();
@@ -204,40 +251,31 @@ public class Features {
         System.out.print("\nPlease enter End Date using this format YYYY-MM-DD: ");
         criteria.put("End Date", in.nextLine().trim()) ;
         System.out.print("\nPlease enter Description: ");
-        criteria.put("Description Date", in.nextLine().trim()) ;
+        criteria.put("Description", in.nextLine().trim()) ;
         System.out.print("\nPlease enter Vendor: ");
         criteria.put("Vendor", in.nextLine().trim()) ;
         System.out.print("\nPlease enter Amount: ");
         criteria.put("Amount", in.nextLine().trim()) ;
 
-        // Compare each entry to each of the Search Criteria
-        for (Transaction e : readEntries()){
-            if (!Objects.equals(criteria.get("Start Date"), "")){
-                if(e.getDate().toEpochDay() >= LocalDate.parse(criteria.get("Start Date")).toEpochDay()) {
-                    System.out.println(e);
+        // Loop through each transaction to check
+        for (Transaction e : readEntries()) {
+            boolean match = true; // assume all transactions match search criteria before filtering
+            // Check if there are blank criteria to skip
+            for (String key : criteria.keySet()) { // loop through each criterion in HashMap
+                String criteriaValue = criteria.get(key); // get value from each criterion
+                if (!criteriaValue.isEmpty()) {
+                    match = meetAllCriteria(key, criteriaValue, e);
+                    if (!match){
+                        break;
+                    }
                 }
-            } else if (!Objects.equals(criteria.get("End Date"), "")){
-                if (e.getDate().toEpochDay() <= LocalDate.parse(criteria.get("End Date")).toEpochDay()) {
-                    System.out.println(e);
-                }
-            } else if (
-                    !Objects.equals(criteria.get("Description"), "") &&
-                    e.getDescription().equalsIgnoreCase(criteria.get("Description"))
-            ){
-                System.out.println(e);
-            } else if (
-                    !Objects.equals(criteria.get("Vendor"), "") &&
-                    e.getVendor().equalsIgnoreCase(criteria.get("Vendor"))
-            ){
-                System.out.println(e);
-            } else if (
-                    !Objects.equals(criteria.get("Amount"), "") &&
-                    e.getAmount() == Double.parseDouble(criteria.get("Amount"))
-            ){
+            }
+            if (match){
                 System.out.println(e);
             }
         }
-    }// End of reportByCriteria function //////////////////////////////////////////////////////////////////////////////
+    }// End of reportByCriteria function
+    // ---------------------------------------------- CUSTOM SEARCH ENDS -----------------------------------------------
 }
 
 

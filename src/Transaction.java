@@ -34,7 +34,7 @@ public class Transaction {
 
     public String toString(){
         return String.format(
-                "\n%s|%s|%s|%s|%.2f",
+                "\n%s | %s | %s | %s | %.2f",
                 this.date,
                 this.time,
                 this.description,
