@@ -4,6 +4,7 @@ import java.time.LocalTime;
 
 public class Transaction {
     // Fields
+    // ignore warning because I may want to access and edit these fields later on with setters
     private LocalDate date;
     private LocalTime time;
     private String description;
@@ -44,7 +45,7 @@ public class Transaction {
     }
     public String toStringDisplay(){
         return String.format(
-                "\n%s  %s | %s | %s | %.2f",
+                "%s  %-8s | %-20s | %-15s | %10.2f",
                 this.date,
                 this.time,
                 this.description,

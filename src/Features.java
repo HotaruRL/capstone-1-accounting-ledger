@@ -46,7 +46,7 @@ public class Features {
                 isValid = true;
             } catch (InputMismatchException e) {
                 System.out.printf("\nInvalid input. Please enter a number value for %s!\n", fieldName);
-                in.next();
+                in.nextLine();
             }
         }
         return userInput;
@@ -66,7 +66,7 @@ public class Features {
         if (creditOrDebit) {
             amount = Math.abs(amount);
         }else{
-            amount = -amount;
+            amount = -Math.abs(amount);
         }
         return new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
     } // End of createEntry method
@@ -78,7 +78,7 @@ public class Features {
             bufReader = new BufferedReader(new FileReader(filePath));
             // Display 1st header line as it is
             String[] headerPart = bufReader.readLine().split("\\|");
-            System.out.printf("\n%s  %s | %s | %s | %s",
+            System.out.printf("\n%10s  %-8s | %-20s | %-15s | %10s\n",
                     headerPart[0], headerPart[1], headerPart[2], headerPart[3], headerPart[4]);
             // Go through each line, parse, create Transaction object, and add to entries ArrayList
             String input;
@@ -180,7 +180,7 @@ public class Features {
                     long todayInEpoch = today.toEpochDay();
                     long firstDayOfMonth = today.withDayOfMonth(1).toEpochDay();
                     long inputDateForCalc = e.getDate().toEpochDay();
-                    if (inputDateForCalc < firstDayOfMonth || inputDateForCalc >= todayInEpoch) {
+                    if (inputDateForCalc < firstDayOfMonth || inputDateForCalc > todayInEpoch) {
                         continue;
                     }
                     System.out.println(e.toStringDisplay());
@@ -217,9 +217,11 @@ public class Features {
     public boolean isValidEndDate(String criteriaValue, LocalDate entryValue){
         return entryValue.toEpochDay() <= LocalDate.parse(criteriaValue).toEpochDay();
     }
+    // ignore warning because this is clearer for me
     public boolean isValidStringExact(String criteriaValue, String entryValue){
         return entryValue.equalsIgnoreCase(criteriaValue);
     }
+    // ignore warning because this is to further enhance the custom search feature
     public boolean isValidStringContains(String criteriaValue, String entryValue){
         return entryValue.contains(criteriaValue);
     }
@@ -251,6 +253,7 @@ public class Features {
             }
         }
         if (("Amount").equalsIgnoreCase(key)) {
+            // ignore warning because this is clearer for me
             if (!isValidAmount(criteriaValue, entry.getAmount())) {
                 return false;
             }
@@ -287,9 +290,9 @@ public class Features {
         System.out.print("\nPlease enter the Description: \n");
         criteria.put("Description", in.nextLine().trim()) ;
         System.out.print("\nPlease enter the Vendor: \n");
-        criteria.put("Vendor", in.nextLine().trim()) ;
-//        System.out.print("\nPlease enter Amount: ");
-        criteria.put("Amount", String.valueOf(getValidatedInputDouble("Amount"))) ;
+        criteria.put("Vendor", in.nextLine().trim());
+        System.out.print("\nPlease enter Amount: ");
+        criteria.put("Amount", in.nextLine().trim());
 
         // Loop through each transaction to check
         for (Transaction e : readEntries()) {
