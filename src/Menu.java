@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Menu {
@@ -108,11 +109,4 @@ public class Menu {
         }// End of while loop for Home Menu
         System.out.println("Goodbye!");
     }// End of Home Menu ///////////////////////////////////////////////////////////////////////////////////////////////
-
-//    Methods for Date
-//    Plain Text//e.g. Previous Year
-//    LocalDate today = LocalDate.now();
-//    LocalDate firstDay = today.minusYears(1).with(firstDayOfYear());
-//    LocalDate lastDay = today.minusYears(1).with(lastDayOfYear());
-//    minusYears method and with method and firstDayOfYear() function are newish
 }// End of Menu class

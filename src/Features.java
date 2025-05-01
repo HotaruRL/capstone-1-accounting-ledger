@@ -18,23 +18,55 @@ public class Features {
     // Constructor
     Features(){}
 
+    // --------------------------------------------- USER INPUT VALIDATION ---------------------------------------------
+    // make sure user enters something for String fields' value
+    public String getValidatedInputString (String fieldName){
+        String userInput;
+        while (true) {
+            System.out.printf("\nPlease enter the %s:\n", fieldName);
+            userInput = in.nextLine().trim();
+            if (!userInput.isEmpty()) {
+                break;
+            }else {
+                System.out.printf("\n%s cannot be blank. Please hit [Enter] to try again!", fieldName);
+                in.nextLine();
+            }
+        }
+        return userInput;
+    } // End of getValidatedInputString method
+
+    // make sure user enters only a number for number (output: double) fields' value
+    public double getValidatedInputDouble (String fieldName){
+        double userInput = 0;
+        boolean isValid = false;
+        while (!isValid) {
+            try {
+                System.out.printf("\nPlease enter the %s:\n", fieldName);
+                userInput = in.nextDouble();
+                isValid = true;
+            } catch (InputMismatchException e) {
+                System.out.printf("\nInvalid input. Please enter a number value for %s!\n", fieldName);
+                in.next();
+            }
+        }
+        return userInput;
+    }
+
+    // ------------------------------------------ USER INPUT VALIDATION ENDS -------------------------------------------
 
     // ----------------------------------------------- UTILITIES METHODS -------------------------------------------- //
     // Create a new transaction entry from user input
     public Transaction createEntry(boolean creditOrDebit) {
         // Add description from user input
-        System.out.println("\nPlease enter the description: ");
-        String description = in.nextLine().trim();
+        String description = getValidatedInputString("Description");
         // Add vendor from user input
-        System.out.println("\nPlease enter the vendor: ");
-        String vendor = in.nextLine().trim();
+        String vendor = getValidatedInputString("Vendor");
         // Add amount from user input
-        System.out.println("\nPlease enter the amount: ");
-        double amount;
+        double amount = getValidatedInputDouble("Amount");
         if (creditOrDebit) {
-            amount = in.nextDouble();
-        }else {
-            amount = -in.nextDouble();
+            amount = Math.abs(amount);
+        }else{
+            amount = -amount;
         }
         return new Transaction(LocalDate.now(), LocalTime.now(), description, vendor, amount);
     } // End of createEntry method
@@ -44,10 +76,12 @@ public class Features {
         ArrayList<Transaction> entries = new ArrayList<>();
         try {
             bufReader = new BufferedReader(new FileReader(filePath));
-            String input;
             // Display 1st header line as it is
-            System.out.println(bufReader.readLine());
+            String[] headerPart = bufReader.readLine().split("\\|");
+            System.out.printf("\n%s  %s | %s | %s | %s",
+                    headerPart[0], headerPart[1], headerPart[2], headerPart[3], headerPart[4]);
             // Go through each line, parse, create Transaction object, and add to entries ArrayList
+            String input;
             while ((input = bufReader.readLine()) != null) {
                 String[] text = input.split("\\|"); // split entry into parts
                 // Convert parts into appropriate data type
@@ -115,7 +149,7 @@ public class Features {
     // Display ALL transaction entries
     public void displayAll() {
         for(Transaction e : readEntries()){
-            System.out.println(e.toString());
+            System.out.println(e.toStringDisplay());
         }
     } // End of displayAll function
 
@@ -124,10 +158,10 @@ public class Features {
         // depositOrPayment: true - display only deposits; false - display only payments
         for (Transaction e : readEntries()) {
             if (depositOrPayment && e.getAmount() > 0) {
-                System.out.println(e);
+                System.out.println(e.toStringDisplay());
             }
             if (!depositOrPayment && e.getAmount() < 0){
-                System.out.println(e);
+                System.out.println(e.toStringDisplay());
             }
         }
     } // End of displayOnly function
@@ -149,23 +183,23 @@ public class Features {
                     if (inputDateForCalc < firstDayOfMonth || inputDateForCalc >= todayInEpoch) {
                         continue;
                     }
-                    System.out.println(e);
+                    System.out.println(e.toStringDisplay());
                 }
                 // Previous Month
                 case 2 -> {
                     if (e.getDate().getMonthValue() == previousMonth && e.getDate().getYear() == today.getYear()){
-                        System.out.println(e);
+                        System.out.println(e.toStringDisplay());
                     }
                 }
                 // Year to Date
                 case 3 -> {
                     if (e.getDate().getYear() == today.getYear()){
-                        System.out.println(e);
+                        System.out.println(e.toStringDisplay());
                     }
                 }
                 case 4 ->{
                     if (e.getDate().getYear() == previousYear){
-                        System.out.println(e);
+                        System.out.println(e.toStringDisplay());
                     }
                 }
                 default -> {return;}
@@ -246,16 +280,16 @@ public class Features {
                     If you want to skip a criteria, just hit [Enter] key.
                     """
         );
-        System.out.print("\nPlease enter Start Date using this format YYYY-MM-DD: ");
+        System.out.print("\nPlease enter the Start Date using this format YYYY-MM-DD: \n");
         criteria.put("Start Date", in.nextLine().trim()) ;
-        System.out.print("\nPlease enter End Date using this format YYYY-MM-DD: ");
+        System.out.print("\nPlease enter the End Date using this format YYYY-MM-DD: \n");
         criteria.put("End Date", in.nextLine().trim()) ;
-        System.out.print("\nPlease enter Description: ");
+        System.out.print("\nPlease enter the Description: \n");
         criteria.put("Description", in.nextLine().trim()) ;
-        System.out.print("\nPlease enter Vendor: ");
+        System.out.print("\nPlease enter the Vendor: \n");
         criteria.put("Vendor", in.nextLine().trim()) ;
-        System.out.print("\nPlease enter Amount: ");
-        criteria.put("Amount", in.nextLine().trim()) ;
+//        System.out.print("\nPlease enter Amount: ");
+        criteria.put("Amount", String.valueOf(getValidatedInputDouble("Amount"))) ;
 
         // Loop through each transaction to check
         for (Transaction e : readEntries()) {
@@ -271,7 +305,7 @@ public class Features {
                 }
             }
             if (match){
-                System.out.println(e);
+                System.out.println(e.toStringDisplay());
             }
         }
     }// End of reportByCriteria function
