@@ -1,8 +1,8 @@
 <p><img alt="Project banner" src="https://github.com/HotaruRL/capstone-1-accounting-ledger/blob/master/img/Artboard%201-80.jpg"></p>
 <h3>An application to record all financial transactions for a business or for personal use</h3>
 <p><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/HotaruRL/capstone-1-accounting-ledger">
-<img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues/HotaruRL/capstone-1-accounting-ledger">
-<img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues-pr/HotaruRL/capstone-1-accounting-ledger">
+<a target="_blank" href="https://github.com/HotaruRL/capstone-1-accounting-ledger/issues" style="display: inline-block;"><img alt="GitHub Open Issues" src="https://img.shields.io/github/issues/HotaruRL/capstone-1-accounting-ledger"></a>
+<img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/HotaruRL/capstone-1-accounting-ledger">
 </p>
 <h1>Features</h1>
 
