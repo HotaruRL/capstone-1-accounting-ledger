@@ -29,12 +29,11 @@
   - Amount
 
 # User-friendly Features
-- Deposits are always positive regarless of input, no more debit/credit confusion
-- Payments are always negative regarless of input, no more debit/credit confusion
+- Deposits are always positive, Payments are always negative regarless of input; no more debit/credit confusion
 - Prompt to add multiple transactions in succession with minimal interruption
-- Reports are displayed in column for easy reading
+- Reports are displayed in columns for easy reading
 - For custom search, user can activate from 0 (show ALL) to 5 criteria filters at the same time similar to using AND operator
-- Description and Vendor searches look for EXACT matches
+- Description and Vendor searches look for EXACT matches but NOT case-sensitive
 
 <html>
 <h1>Screenshots</h1>
