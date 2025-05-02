@@ -81,4 +81,23 @@
 </details>
 
 <h1>Interesting Code</h1>
+<p>This block of code makes sure user enters something for a String field' value before moving on. Also, this block is resusable for all String field just by passing in the fieldName and the prompt will mention it.</p>
+
+
+```java
+    public String getValidatedInputString (String fieldName){
+        String userInput;
+        while (true) {
+            System.out.printf("\nPlease enter the %s:\n", fieldName);
+            userInput = in.nextLine().trim();
+            if (!userInput.isEmpty()) {
+                break;
+            }else {
+                System.out.printf("\n%s cannot be blank. Please hit [Enter] to try again!", fieldName);
+                in.nextLine();
+            }
+        }
+        return userInput;
+```
+
 </html>
