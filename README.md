@@ -1,3 +1,4 @@
+<html>
 <p><img alt="Project banner" src="https://github.com/HotaruRL/capstone-1-accounting-ledger/blob/master/img/Artboard%201-80.jpg"></p>
 <h3>An application to record all financial transactions for a business or for personal use</h3>
 <p>
@@ -6,7 +7,36 @@
 <a target="_blank" href="https://github.com/HotaruRL/capstone-1-accounting-ledger/pulls" style="display: inline-block;"><img alt="GitHub Pull Requests" src="https://img.shields.io/github/issues-pr/HotaruRL/capstone-1-accounting-ledger"></a>
 </p>
 <h1>Features</h1>
+</html>
 
+- [x] Add transaction entries
+  - Deposits
+  - Payments
+- [x] Display Ledger (in reversed chronological order)
+  - ALL entries
+  - ONLY deposits
+  - ONLY payments
+- [x] Run pre-defined reports
+  - Month to date
+  - Previous month
+  - Year to date
+  - Previous year
+- [x] Custom Search
+  - Start Date
+  - End Date
+  - Description
+  - Vendor
+  - Amount
+
+# User-friendly Features
+- Deposits are always positive regarless of input, no more debit/credit confusion
+- Payments are always negative regarless of input, no more debit/credit confusion
+- Prompt to add multiple transactions in succession with minimal interruption
+- Reports are displayed in column for easy reading
+- For custom search, user can activate from 0 (show ALL) to 5 criteria filters at the same time similar to using AND operator
+- Description and Vendor searches look for EXACT matches
+
+<html>
 <h1>Screenshots</h1>
 <h3>Main Menu</h3>
 <details>
@@ -52,3 +82,4 @@
 </details>
 
 <h1>Interesting Code</h1>
+</html>
