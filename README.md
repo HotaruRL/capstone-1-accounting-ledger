@@ -1,6 +1,6 @@
 <html>
 <p><img alt="Project banner" src="https://github.com/HotaruRL/capstone-1-accounting-ledger/blob/master/img/Artboard%201-80.jpg"></p>
-<h3>An application to record all financial transactions for a business or for personal use</h3>
+<h3>A Command Line Interface (CLI) application to manage all financial transactions for business and personal use</h3>
 <p>
 <a target="_blank" href="https://github.com/HotaruRL/capstone-1-accounting-ledger/commits/master/" style="display: inline-block;"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/HotaruRL/capstone-1-accounting-ledger"></a>
 <a target="_blank" href="https://github.com/HotaruRL/capstone-1-accounting-ledger/issues" style="display: inline-block;"><img alt="GitHub Open Issues" src="https://img.shields.io/github/issues/HotaruRL/capstone-1-accounting-ledger"></a>
